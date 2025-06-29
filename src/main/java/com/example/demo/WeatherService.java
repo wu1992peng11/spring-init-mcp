@@ -1,6 +1,7 @@
 package com.example.demo;
 
 
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -9,6 +10,8 @@ import org.springframework.web.client.RestTemplate;
 public class WeatherService {
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Tool(name = "getWeatherByCoordinates",
+            description = "Get weather forecast for a specific latitude/longtitude")
     public String getWeatherByCoordinates(double lat, double lon) {
         // 1. 查询点的元数据（包括forecast链接）
         String pointUrl = String.format("https://api.weather.gov/points/%f,%f", lat, lon);
@@ -18,6 +21,7 @@ public class WeatherService {
         ResponseEntity<String> pointResp = restTemplate.exchange(pointUrl, HttpMethod.GET, entity, String.class);
         // 2. 提取forecast链接
         String body = pointResp.getBody();
+        System.out.println("weather body");
         String forecastUrl = null;
         if (body != null && body.contains("\"forecast\"")) {
             int idx = body.indexOf("\"forecast\"");
@@ -32,4 +36,7 @@ public class WeatherService {
         ResponseEntity<String> forecastResp = restTemplate.exchange(forecastUrl, HttpMethod.GET, entity, String.class);
         return forecastResp.getBody();
     }
+
+
+
 }

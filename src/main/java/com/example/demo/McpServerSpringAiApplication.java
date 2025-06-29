@@ -2,6 +2,7 @@ package com.example.demo;
 
 
 import org.springframework.ai.tool.ToolCallbackProvider;
+import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.method.MethodToolCallbackProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,4 +19,6 @@ public class McpServerSpringAiApplication {
     public ToolCallbackProvider weatherTools(WeatherService weatherService){
         return MethodToolCallbackProvider.builder().toolObjects(weatherService).build();
     }
+
+
 }
